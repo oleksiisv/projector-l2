@@ -1,0 +1,216 @@
+version: '3.5'
+
+volumes:
+  mongo:
+    driver: ${VOLUMES_DRIVER}
+  elasticsearch:
+    driver: ${VOLUMES_DRIVER}
+  docker-in-docker:
+    driver: ${VOLUMES_DRIVER}
+  grafana_data: { }
+  influxdb_data: { }
+
+services:
+
+  ### PHP-FPM ##############################################
+    php-fpm:
+      build:
+        context: ./php-fpm
+        args:
+          - CHANGE_SOURCE=${CHANGE_SOURCE}
+          - BASE_IMAGE_TAG_PREFIX=${PHP_FPM_BASE_IMAGE_TAG_PREFIX}
+          - LARADOCK_PHP_VERSION=${PHP_VERSION}
+          - LARADOCK_PHALCON_VERSION=${PHALCON_VERSION}
+          - INSTALL_BZ2=${PHP_FPM_INSTALL_BZ2}
+          - INSTALL_ENCHANT=${PHP_FPM_INSTALL_ENCHANT}
+          - INSTALL_GMP=${PHP_FPM_INSTALL_GMP}
+          - INSTALL_GNUPG=${PHP_FPM_INSTALL_GNUPG}
+          - INSTALL_XDEBUG=${PHP_FPM_INSTALL_XDEBUG}
+          - INSTALL_PCOV=${PHP_FPM_INSTALL_PCOV}
+          - INSTALL_PHPDBG=${PHP_FPM_INSTALL_PHPDBG}
+          - INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}
+          - INSTALL_SSH2=${PHP_FPM_INSTALL_SSH2}
+          - INSTALL_SOAP=${PHP_FPM_INSTALL_SOAP}
+          - INSTALL_XSL=${PHP_FPM_INSTALL_XSL}
+          - INSTALL_SMB=${PHP_FPM_INSTALL_SMB}
+          - INSTALL_IMAP=${PHP_FPM_INSTALL_IMAP}
+          - INSTALL_MONGO=${PHP_FPM_INSTALL_MONGO}
+          - INSTALL_AMQP=${PHP_FPM_INSTALL_AMQP}
+          - INSTALL_CASSANDRA=${PHP_FPM_INSTALL_CASSANDRA}
+          - INSTALL_ZMQ=${PHP_FPM_INSTALL_ZMQ}
+          - INSTALL_GEARMAN=${PHP_FPM_INSTALL_GEARMAN}
+          - INSTALL_MSSQL=${PHP_FPM_INSTALL_MSSQL}
+          - INSTALL_BCMATH=${PHP_FPM_INSTALL_BCMATH}
+          - INSTALL_PHPREDIS=${PHP_FPM_INSTALL_PHPREDIS}
+          - INSTALL_MEMCACHED=${PHP_FPM_INSTALL_MEMCACHED}
+          - INSTALL_OPCACHE=${PHP_FPM_INSTALL_OPCACHE}
+          - INSTALL_EXIF=${PHP_FPM_INSTALL_EXIF}
+          - INSTALL_AEROSPIKE=${PHP_FPM_INSTALL_AEROSPIKE}
+          - INSTALL_OCI8=${PHP_FPM_INSTALL_OCI8}
+          - INSTALL_MYSQLI=${PHP_FPM_INSTALL_MYSQLI}
+          - INSTALL_PGSQL=${PHP_FPM_INSTALL_PGSQL}
+          - INSTALL_PG_CLIENT=${PHP_FPM_INSTALL_PG_CLIENT}
+          - INSTALL_POSTGIS=${PHP_FPM_INSTALL_POSTGIS}
+          - INSTALL_INTL=${PHP_FPM_INSTALL_INTL}
+          - INSTALL_GHOSTSCRIPT=${PHP_FPM_INSTALL_GHOSTSCRIPT}
+          - INSTALL_LDAP=${PHP_FPM_INSTALL_LDAP}
+          - INSTALL_PHALCON=${PHP_FPM_INSTALL_PHALCON}
+          - INSTALL_SWOOLE=${PHP_FPM_INSTALL_SWOOLE}
+          - INSTALL_TAINT=${PHP_FPM_INSTALL_TAINT}
+          - INSTALL_IMAGE_OPTIMIZERS=${PHP_FPM_INSTALL_IMAGE_OPTIMIZERS}
+          - INSTALL_IMAGEMAGICK=${PHP_FPM_INSTALL_IMAGEMAGICK}
+          - INSTALL_CALENDAR=${PHP_FPM_INSTALL_CALENDAR}
+          - INSTALL_XLSWRITER=${PHP_FPM_INSTALL_XLSWRITER}
+          - INSTALL_FAKETIME=${PHP_FPM_INSTALL_FAKETIME}
+          - INSTALL_IONCUBE=${PHP_FPM_INSTALL_IONCUBE}
+          - INSTALL_APCU=${PHP_FPM_INSTALL_APCU}
+          - INSTALL_CACHETOOL=${PHP_FPM_INSTALL_CACHETOOL}
+          - INSTALL_YAML=${PHP_FPM_INSTALL_YAML}
+          - INSTALL_RDKAFKA=${PHP_FPM_INSTALL_RDKAFKA}
+          - INSTALL_GETTEXT=${PHP_FPM_INSTALL_GETTEXT}
+          - INSTALL_ADDITIONAL_LOCALES=${PHP_FPM_INSTALL_ADDITIONAL_LOCALES}
+          - INSTALL_MYSQL_CLIENT=${PHP_FPM_INSTALL_MYSQL_CLIENT}
+          - INSTALL_PING=${PHP_FPM_INSTALL_PING}
+          - INSTALL_SSHPASS=${PHP_FPM_INSTALL_SSHPASS}
+          - INSTALL_MAILPARSE=${PHP_FPM_INSTALL_MAILPARSE}
+          - INSTALL_PCNTL=${PHP_FPM_INSTALL_PCNTL}
+          - ADDITIONAL_LOCALES=${PHP_FPM_ADDITIONAL_LOCALES}
+          - INSTALL_FFMPEG=${PHP_FPM_FFMPEG}
+          - INSTALL_AUDIOWAVEFORM=${PHP_FPM_AUDIOWAVEFORM}
+          - INSTALL_WKHTMLTOPDF=${PHP_FPM_INSTALL_WKHTMLTOPDF}
+          - WKHTMLTOPDF_VERSION=${WORKSPACE_WKHTMLTOPDF_VERSION}
+          - INSTALL_XHPROF=${PHP_FPM_INSTALL_XHPROF}
+          - INSTALL_XMLRPC=${PHP_FPM_INSTALL_XMLRPC}
+          - INSTALL_PHPDECIMAL=${PHP_FPM_INSTALL_PHPDECIMAL}
+          - INSTALL_ZOOKEEPER=${PHP_FPM_INSTALL_ZOOKEEPER}
+          - INSTALL_SSDB=${PHP_FPM_INSTALL_SSDB}
+          - INSTALL_TRADER=${PHP_FPM_INSTALL_TRADER}
+          - INSTALL_EVENT=${PHP_FPM_INSTALL_EVENT}
+          - DOWNGRADE_OPENSSL_TLS_AND_SECLEVEL=${PHP_DOWNGRADE_OPENSSL_TLS_AND_SECLEVEL}
+          - PUID=${PHP_FPM_PUID}
+          - PGID=${PHP_FPM_PGID}
+          - IMAGEMAGICK_VERSION=${PHP_FPM_IMAGEMAGICK_VERSION}
+          - LOCALE=${PHP_FPM_DEFAULT_LOCALE}
+          - PHP_FPM_NEW_RELIC=${PHP_FPM_NEW_RELIC}
+          - PHP_FPM_NEW_RELIC_KEY=${PHP_FPM_NEW_RELIC_KEY}
+          - PHP_FPM_NEW_RELIC_APP_NAME=${PHP_FPM_NEW_RELIC_APP_NAME}
+          - INSTALL_DOCKER_CLIENT=${PHP_FPM_INSTALL_DOCKER_CLIENT}
+          - http_proxy
+          - https_proxy
+          - no_proxy
+      volumes:
+        - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
+        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+        - docker-in-docker:/certs/client
+      ports:
+        - "${PHP_FPM_XDEBUG_PORT}:9003"
+      expose:
+        - "9000"
+      extra_hosts:
+        - "dockerhost:${DOCKER_HOST_IP}"
+      environment:
+        - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
+        - DOCKER_HOST=tcp://docker-in-docker:2376
+        - DOCKER_TLS_VERIFY=1
+        - DOCKER_TLS_CERTDIR=/certs
+        - DOCKER_CERT_PATH=/certs/client
+        - FAKETIME=${PHP_FPM_FAKETIME}
+
+### NGINX Server #########################################
+    nginx:
+      build:
+        context: ./nginx
+        args:
+          - CHANGE_SOURCE=${CHANGE_SOURCE}
+          - PHP_UPSTREAM_CONTAINER=${NGINX_PHP_UPSTREAM_CONTAINER}
+          - PHP_UPSTREAM_PORT=${NGINX_PHP_UPSTREAM_PORT}
+          - http_proxy
+          - https_proxy
+          - no_proxy
+      volumes:
+        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+        - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+        - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
+        - ${NGINX_SSL_PATH}:/etc/nginx/ssl
+      ports:
+        - "${NGINX_HOST_HTTP_PORT}:80"
+        - "${NGINX_HOST_HTTPS_PORT}:443"
+        - "${VARNISH_BACKEND_PORT}:81"
+      depends_on:
+        - php-fpm
+
+### MongoDB ##############################################
+    mongo:
+      build: ./mongo
+      ports:
+        - "${MONGODB_PORT}:27017"
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+        - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+      volumes:
+        - ${DATA_PATH_HOST}/mongo:/data/db
+        - ${DATA_PATH_HOST}/mongo_config:/data/configdb
+
+### ElasticSearch ########################################
+    elasticsearch:
+      build:
+        context: ./elasticsearch
+        args:
+          - ELK_VERSION=${ELK_VERSION}
+      volumes:
+        - elasticsearch:/usr/share/elasticsearch/data
+      environment:
+        - cluster.name=laradock-cluster
+        - node.name=laradock-node
+        - bootstrap.memory_lock=true
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        - cluster.initial_master_nodes=laradock-node
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+        nofile:
+          soft: 65536
+          hard: 65536
+      ports:
+        - "${ELASTICSEARCH_HOST_HTTP_PORT}:9200"
+        - "${ELASTICSEARCH_HOST_TRANSPORT_PORT}:9300"
+      depends_on:
+        - php-fpm
+
+### Grafana ################################################
+    grafana:
+      build:
+        context: ./grafana
+      volumes:
+        - ${DATA_PATH_HOST}/grafana:/var/lib/grafana
+        - ${DATA_PATH_HOST}/grafana/provisioning/:/etc/grafana/provisioning/
+        - ${DATA_PATH_HOST}/grafana/dashboards/:/var/lib/grafana/dashboards/
+      ports:
+        - "${GRAFANA_PORT}:3000"
+      depends_on:
+        - influxdb
+      env_file: configuration.env
+
+    ### Telegraf ################################################
+
+    telegraf:
+      image: telegraf:1.21
+      volumes:
+        - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+        - /var/run/docker.sock:/var/run/docker.sock
+      depends_on:
+        - influxdb
+      ports:
+        - '127.0.0.1:8125:8125/udp'
+
+    ### InfluxDb ################################################
+
+    influxdb:
+      image: influxdb:1.8
+      env_file: configuration.env
+      ports:
+        - "${INFLUXDB_PORT}:8086"
+      volumes:
+        - ./:/imports
+        - influxdb_data:/var/lib/influxdb
